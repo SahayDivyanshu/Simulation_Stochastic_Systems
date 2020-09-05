@@ -1,0 +1,63 @@
+samples = 5000;
+%random vaiable
+Xk = rand(1, samples);
+disp('Xk is')
+fprintf('%f',Xk);
+fprintf('\n');
+
+%random  variable shifted right by 1
+Xk_plus_1 = zeros(size(Xk));
+shift = 1;
+Xk_plus_1(shift+1:end)=Xk(1:end-shift);
+
+disp('X(k+1) is')
+fprintf('%f',Xk_plus_1);
+fprintf('\n');
+
+% calculationn of covariance
+Covariance_2a = cov(Xk,Xk_plus_1);
+disp('Covariance of Xk and X(K+1)');
+disp(Covariance_2a);
+
+%random variable shifted left by 1
+Xk_minus_1 = zeros(size(Xk));
+Xk_minus_1(1:end-shift)=Xk(2:end);
+
+disp('X(k-1) is')
+fprintf('%f',Xk_minus_1);
+fprintf('\n');
+
+%random variable shifted left by 2
+shift_2 = 2;
+Xk_minus_2 = zeros(size(Xk));
+Xk_minus_2(1:end-shift_2)=Xk(3:end);
+
+disp('X(k-2) is')
+fprintf('%f',Xk_minus_2);
+fprintf('\n');
+
+%random variable shifted left by 3
+
+shift_3 = 3;
+Xk_minus_3 = zeros(size(Xk));
+Xk_minus_3(1:end-shift_3)=Xk(4:end);
+
+disp('X(k-3) is')
+fprintf('%f',Xk_minus_3);
+fprintf('\n');
+
+%performing substraction
+Yk = Xk - 2*Xk_minus_1 + 0.5*Xk_minus_2 - Xk_minus_3;
+Covariance_2b = cov(Xk, Yk);
+disp('Covariance of Xk and Yk');
+disp(Covariance_2b);
+
+
+
+
+
+% A=[1 2 3 4 5] 
+% B=zeros(size(A));
+% n=1; %Shift units
+% B(1:end-n)=A(2:end)
+

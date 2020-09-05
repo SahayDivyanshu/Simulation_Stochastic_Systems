@@ -1,0 +1,93 @@
+% 
+% % The interval [-3,2] can be represented as x and y 
+x = -3;
+y = 2;
+Total_Sample = 50000; % Number of samples taken between the given interval
+Sampling = x + (y-x)*rand(Total_Sample,1); % Sampling between the interval given by y-x
+% figure(1);
+% grid on;
+% histogram(Sampling);
+% xlim([x y]);
+
+
+% ----------------------------------- 1b ----------------------------------
+% Theoretical Mean
+% % for uniform distribution the theoreticla mean is calculated as
+% Mean_th = (x+y)/2;
+% 
+% % Theoretical Variance
+% % for uniform distrubution the variance and standard deviation is calucluted as 
+% Var_th = (y-x)^2/12;
+% SD_th = sqrt(Var_th);
+
+% Sample parameters are calculated Using MATLAB Command
+
+% % SAMPLE MEAN: 
+% Mean_Sample = mean(Sampling)
+% % SAMPLE VARIANCE:
+% Var_Sample = var(Sampling)
+% % STANDARD DEVIATION 
+% SD_Sample = std(Sampling)
+
+% Results
+% 
+% disp('THEORETICAL VALES')
+% fprintf('Theoretical Mean: %f \n', Mean_th);
+% fprintf('Theoretical Variance: %f \n',Var_th );
+% fprintf('Theoretical Standard Deviation: %f \n', SD_th);
+% fprintf('\n');
+% fprintf('\n');
+% disp('SAMPLE VALES')
+% disp('--- 50000 Samples-----')
+% fprintf('Sample Mean: %f \n', Mean_Sample);
+% fprintf('Sample Variance: %f \n', Var_Sample);
+% fprintf('Sample Standard Deviation: %f \n', SD_Sample);
+
+% -------------------------- 1c--------------------------------------
+
+% The boot strap confidence interval for the sample mean and standard
+% deviation can be calculated usinb the MATLAB command "bootci", which computes the 95% bootstrap confidence
+% interval.
+
+
+%BOOTSTRAP INTERVAL FOR THE SAMPLE MEAN.
+
+[CI_Mean, MEAN_CI] = bootci(10000,@mean,Sampling);
+% CI_Mean (user_specified_name) is the parameter where the bootci returns the confidence intervals
+% MEAN_CI (user_specified_name) is the parameter which receives the Sample mean value
+% in bootci: 10,000 is the user_specified number of samples 
+% and 'Sampling' is the randomly generated samples between x and y.
+% @mean is the fuction handle that determines the operation that will be
+% performed by the bootci function.
+
+disp('CONFIDENCE INTERVALS FOR SAMPLE MEAN')
+fprintf('2.5th : %f \n', CI_Mean(1));
+fprintf('97.5th : %f \n', CI_Mean(2));
+
+figure(1);
+histogram(MEAN_CI);
+hold on; % lets us plot both the confidence interval and histogram on the same plot
+plot((mean(MEAN_CI))*[1,1],ylim,'LineWidth',1.5);
+plot((CI_Mean(1))*[1,1],ylim,'LineWidth',1.5);
+plot((CI_Mean(2))*[1,1],ylim,'LineWidth', 1.5);
+
+
+%BOOTSTRAP INTERVAL FOR THE STANDARD DEVIATION.
+
+[CI_SD, StdD_CI] = bootci(10000,@std,Sampling);
+% CI_SD (user_specified_name) is the parameter where the bootci returns the confidence intervals
+% StD_CI (user_specified_name) is the parameter which receives the Sample Standard Deviation value
+% in bootci: 10,000 is the user_specified number of samples 
+% and 'Sampling' is the randomly generated samples between x and y.
+% @std is the fuction handle that determines the operation that will be
+% performed by the bootci function.
+
+disp('CONFIDENCE INTERVALS FOR SAMPLE STANDARD DEVIATION')
+fprintf('2.5th : %f \n', CI_SD(1));
+fprintf('97.5th : %f \n', CI_SD(2));
+
+figure(2);
+histogram(StdD_CI);
+hold on; % lets us plot both the confidence interval and histogram on the same plot
+plot((CI_SD(1))*[1,1], ylim,'LineWidth',1.5);
+plot((CI_SD(2))*[1,1], ylim,'LineWidth',1.5);
